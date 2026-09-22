@@ -81,10 +81,19 @@ def check_permissions(runtime) -> CheckResult:
 
 def check_ai_provider(runtime) -> CheckResult:
     ok, detail = _probe_async(runtime.ai.available())
-    return CheckResult("AI provider", _status(ok, runtime.ai.name == "mock"),
-                       f"{runtime.ai.name}: {detail}",
-                       category="ai",
-                       fix="set AI_PROVIDER / OPENAI_API_KEY, or use Ollama")
+    if ok:
+        return CheckResult("AI provider", "PASS",
+                           f"{runtime.ai.name}: {detail}", category="ai")
+    # No reachable cloud AI is a SUPPORTED degraded state (§37 local-first,
+    # §41 offline mode): the deterministic heuristic planner keeps NOVA fully
+    # functional. Report WARNING with an actionable message — never ERROR.
+    return CheckResult(
+        "AI provider", "WARNING",
+        f"{runtime.ai.name}: {detail} — local heuristic planner active "
+        f"(offline mode; automation still works)",
+        category="ai",
+        fix="set OPENAI_API_KEY (or AI_PROVIDER=ollama + a local Ollama "
+            "server) for LLM planning")
 
 
 def _probe_async(coro):
