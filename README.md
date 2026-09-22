@@ -156,6 +156,12 @@ python scripts/build_windows_exe.py all
 # → dist\NovaBackend.exe, dist\NovaDesktop.exe
 ```
 
+### Deploy to Vercel (cloud dashboard + API)
+
+Import the repo at [vercel.com/new](https://vercel.com/new) — `vercel.json`
+configures everything. See **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)** for
+what runs in the cloud and the security lockdown applied there.
+
 ---
 
 ## Development setup

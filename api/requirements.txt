@@ -1,0 +1,9 @@
+# Vercel serverless dependencies — the slim set the API needs.
+# Desktop/voice/browser engines (PyQt6, faster-whisper, pyttsx3, playwright)
+# are imported lazily and degrade gracefully when absent (§62).
+fastapi>=0.110
+pydantic>=2.5
+sqlalchemy>=2.0
+httpx>=0.27
+Pillow>=10.0
+send2trash>=1.8
