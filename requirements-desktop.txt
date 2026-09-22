@@ -1,0 +1,14 @@
+# NOVA desktop UI
+-r requirements.txt
+PyQt6>=6.6
+PyQt6-WebEngine>=6.6          # used by developer dashboard component
+qasync>=0.27
+
+# Windows computer-control plugins (install on the target machine)
+pyautogui>=0.9.54
+pygetwindow>=0.0.9
+psutil>=5.9
+uiautomation>=2.0.20
+pywinauto>=0.6.8
+Pillow>=10.0
+send2trash>=1.8

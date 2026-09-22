@@ -1,0 +1,70 @@
+# NOVA lint policy.
+#
+# NOVA is a fault-tolerant desktop agent: it must *never* crash the user's
+# session because a peripheral subsystem (TTS, screenshot, clipboard, a cloud
+# provider, a UI animation) misbehaves. By design, the agent/tool/provider/UI
+# layers catch broad exceptions at their boundaries and convert them into
+# structured results or graceful fallbacks instead of raising.
+#
+# Two rules therefore describe an intentional, audited pattern here rather
+# than a defect, and are disabled project-wide with this note:
+#
+#   BLE001  "do not catch blind Exception"
+#   S110    "try-except-pass"
+#
+# The selected ruleset focuses on *real* defects — undefined/unused names,
+# likely bugs, subprocess and security misuse, blocking calls in async code,
+# mutable shared state — while leaving purely cosmetic style to the formatter.
+
+target-version = "py311"
+line-length = 110
+
+[lint]
+select = [
+    "F",     # pyflakes: unused/undefined names, redefinitions (the essentials)
+    "E9",    # syntax / runtime errors
+    "B",     # flake8-bugbear: likely bugs
+    "S",     # flake8-bandit: security
+    "ASYNC", # async correctness (blocking calls in coroutines)
+    "C4",    # flake8-comprehensions
+    "PIE",   # flake8-pie
+    "RUF",   # ruff-specific checks
+    "DTZ",   # naive datetime misuse
+    "EXE",   # shebang/exec-bit consistency
+]
+ignore = [
+    # Intentional resilience boundaries — see note at the top of this file.
+    "BLE001",
+    "S110",
+    # Async rules that flag deliberate fire-and-forget / timeout-parameter idioms.
+    "ASYNC109",  # async functions may accept an explicit timeout kwarg
+    "ASYNC240",  # best-effort probes intentionally open files synchronously
+    # Bandit rules that are false positives for this architecture.
+    "S101",   # asserts are expected in the test-suite
+    "S104",   # dev preview intentionally binds 0.0.0.0 (documented)
+    "S105",   # "PASS" is a status literal, not a credential
+    "S108",   # /tmp paths in tests are intentional scratch areas
+    "S113",   # the SSE stream client intentionally has no read timeout
+    "S112",   # per-item recovery loops continue on expected failures
+    "S324",   # md5 is used for duplicate-file *fingerprinting*, not security
+    "S603",   # subprocess args are validated upstream in the safety layer
+    "S604",   # ControlledShell is the single sanctioned shell=True path
+    "S607",   # platform launchers (explorer/open/xdg-open) resolve via PATH
+    "S602",   # process launch is gated by the dangerous-command detector
+    # Minor style nits that add noise without changing behaviour.
+    "RUF005",   # list-concat vs unpack is a matter of taste here
+    "RUF003",   # en-dashes in human-facing strings are intentional
+]
+
+[lint.per-file-ignores]
+# Linear, self-describing scenario runners and CI helpers.
+"scripts/acceptance.py" = ["S101", "PLR2004"]
+"scripts/check.py" = ["S603"]
+"scripts/dev_setup.py" = ["S603"]
+"scripts/build_windows_exe.py" = ["S603"]
+# Tests legitimately assert and use scratch paths.
+"backend/tests/**" = ["S101", "S108", "DTZ"]
+
+[format]
+quote-style = "double"
+indent-style = "space"

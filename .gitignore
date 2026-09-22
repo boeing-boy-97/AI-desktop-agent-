@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# NOVA runtime
+*.db
+*.db-journal
+*.db-wal
+logs/
+screenshots/
+.nova-data/
+
+# Build
+build/
+dist/
+*.spec.bak
+*.exe
+
+# Secrets / env
+.env
+*.pem
+*.key
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node (browser extension tooling)
+node_modules/

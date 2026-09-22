@@ -1,0 +1,1 @@
+"""NOVA desktop application package."""

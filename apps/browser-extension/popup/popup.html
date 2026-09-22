@@ -1,0 +1,29 @@
+ <!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>NOVA Companion</title>
+  <style>
+    :root { color-scheme: dark; }
+    body { font-family: "Segoe UI", system-ui, sans-serif; background: #0b0e14; color: #e6eaf2; width: 300px; margin: 0; }
+    .wrap { padding: 16px; }
+    h1 { font-size: 15px; margin: 0 0 4px; color: #4fd1c5; }
+    .muted { color: #8b94a7; font-size: 11px; margin-bottom: 14px; }
+    button { width: 100%; background: #171c28; color: #e6eaf2; border: 1px solid #232a3a; border-radius: 8px; padding: 10px; margin-bottom: 8px; cursor: pointer; }
+    button.primary { background: #4fd1c5; color: #04211f; font-weight: 600; border: none; }
+    button:hover { border-color: #4fd1c5; }
+    #status { font-size: 11px; color: #8b94a7; min-height: 16px; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>NOVA Companion</h1>
+    <div class="muted">Bridge between this tab and the NOVA desktop agent.</div>
+    <button class="primary" id="send-page">Send this page to NOVA</button>
+    <button id="send-selection">Send selection to NOVA</button>
+    <button id="open-agent">Open NOVA command line</button>
+    <div id="status"></div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
